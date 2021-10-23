@@ -1,21 +1,19 @@
 import React from 'react';
+import {SignUpPage} from './pages/SignUpPage';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {SignInPage} from "./pages/SignInPage";
+import {MainPage} from "./pages/MainPage";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <Switch>
+          <Route exact={true} path={'/signup'} component={SignUpPage}/>
+          <Route exact={true} path={'/signin'} component={SignInPage}/>
+          <Route exact={true} path={'/main'} component={MainPage}/>
+        </Switch>
+      </Router>
     </div>
   );
 }
