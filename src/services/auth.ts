@@ -31,6 +31,7 @@ export function signOut(): Promise<any> {
 
 export function validateToken(): Promise<any> {
     const url = apiUrl + '/api/auth/check';
+    headers.Authorization = localStorage.getItem('token') || '';
     return fetchAndParse<any>(url, {
         method: 'POST',
         headers: headers

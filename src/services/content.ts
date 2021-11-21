@@ -43,3 +43,13 @@ export function getAudioBookData(content_id: string): Promise<any> {
   headers.Authorization = localStorage.getItem('token') || '';
   return fetchAndParse<ContentResponse>(url, {method: "GET", headers});
 }
+
+export function uploadContent(formData: FormData): Promise<any> {
+  const url = apiUrl + '/api/content/upload';
+  headers.Authorization = localStorage.getItem('token') || '';
+  // headers['Content-Type'] = 'multipart/form-data';
+  console.log('fff',formData)
+  const response = fetchAndParse<ContentResponse>(url, {method: "PUT", headers, body: formData});
+  headers['Content-Type'] = 'application/json';
+  return response
+}

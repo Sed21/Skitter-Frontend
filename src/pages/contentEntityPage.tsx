@@ -11,6 +11,7 @@ import { useRouting } from "../routing";
 import { SearchContext } from "../contexts/search";
 import { useData } from "../hooks/useData";
 import ReactAudioPlayer from 'react-audio-player';
+import Review from "../components/Review";
 
 
 
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: 'no-repeat',
   },
   cardRoot: {
-
+    width: '80vh'
   }
 }))
 
@@ -34,7 +35,6 @@ const DisplayContentEntity = (p: { content: Content, setReload: React.Dispatch<R
   const classes = useStyles();
   const audioFile = window.location.href.split('/').pop() || ''
 
-  console.log(`http://127.0.0.1:8080/api/content/audio/${encodeURI(audioFile)}`)
   return (
       <Card className={classes.cardRoot}>
           <CardContent>
@@ -45,14 +45,18 @@ const DisplayContentEntity = (p: { content: Content, setReload: React.Dispatch<R
             <Typography style={{ textAlign: "start" }}>{p.content.description}</Typography>
             <Typography style={{ textAlign: "start" }}>{p.content.review}</Typography>
             <Typography style={{ textAlign: "start" }}>{p.content.upload_date}</Typography>
+            <div>
+              <ReactAudioPlayer
+                src={`http://127.0.0.1:8080/api/content/audio/${encodeURI(audioFile)}`}
+                autoPlay={false}
+                controls={true}
+                // controlsList={"Download"}
+              />
+            </div>
+            <Review content_id={p.content.content_id} reviewValue={p.content.review}/>
           </CardContent>
-          <div>
-            <ReactAudioPlayer
-              src={`http://127.0.0.1:8080/api/content/audio/${encodeURI(audioFile)}`}
-              autoPlay
-              controls
-            />
-          </div>
+
+
       </Card >
   );
 }
@@ -73,7 +77,6 @@ export const ContentBlock = () => {
   if (isLoading) {
     return <div></div>;
   }
-  console.log(data?.content[0])
   return <div>
     <DisplayContentEntity content={data?.content[0] as unknown as Content} setReload={setReload} reload={reload} />
   </div>

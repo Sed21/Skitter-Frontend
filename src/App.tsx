@@ -5,6 +5,7 @@ import { route, startUrl, urls } from "./routing";
 import { WelcomePage } from "./pages/welcomePage";
 import { LoginPage } from "./pages/signInPage";
 import { ContentPage } from "./pages/contentPage";
+import { AddContent } from "./pages/addContent";
 import { ContentEntityPage } from "./pages/contentEntityPage";
 import { makeStyles } from "@mui/styles";
 import { RegisterPage } from "./pages/signUpPage";
@@ -35,6 +36,7 @@ const App = () => {
         <Route exact={true} path={route(urls.welcomePage)} component={WelcomePage}/>
          <Route exact={true} path={route(urls.contentPage)} component={ContentPage}/>
          <Route exact={true} path={route(urls.contentEntityPage, ["id"])} component={ContentEntityPage}/>
+        <Route exact={true} path={route(urls.addContent)} component={AddContent}/>
         {/* <Route exact={true} path={route(urls.signUpPage)} component={}/>
         <Route exact={true} path={route(urls.signInPage)} component={}/>
         <Route exact={true} path={route(urls.startPage)} component={}/> */}

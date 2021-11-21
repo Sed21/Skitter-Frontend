@@ -1,4 +1,4 @@
-import { AppBar, Fade, IconButton, InputBase, Link, Menu, Toolbar, Tooltip } from '@mui/material'
+import { AppBar,Button, Fade, IconButton, InputBase, Link, Menu, Toolbar, Tooltip } from '@mui/material'
 import React, { KeyboardEventHandler, useContext, useState } from 'react'
 import { makeStyles } from '@mui/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -113,6 +113,14 @@ export const NavBar = () => {
           </Typography>
         </IconButton>
       </Link>
+      <IconButton edge="start" onClick={() => routeTo(urls.addContent)}>
+        <MenuBookIcon className={classes.menuLogo}>
+        </MenuBookIcon>
+        <Typography variant="h6" className={classes.title}>
+          Add Creation page
+        </Typography>
+      </IconButton>
+      <Button> Click me</Button>
       <div style={{ flexGrow: 1 }}>
       </div>
       <div className={classes.search}>
@@ -142,7 +150,7 @@ export const NavBar = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => routeTo(() => urls.accountPage({id: localStorage.getItem('user_id') || ''}))}>
+        <MenuItem onClick={() => routeTo(() => urls.accountPage({id: localStorage.getItem('id') || ''}))}>
           <Typography>My account</Typography>
         </MenuItem>
         {localStorage.getItem("role") === "Admin" ?
