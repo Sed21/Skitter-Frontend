@@ -7,6 +7,7 @@
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.4",
     "@mui/styles": "^5.0.2",
+    "@mui/x-data-grid": "^5.0.1",
     "@types/react-audio-player": "^0.13.0",
     "formik": "^2.2.9",
     "react": "^17.0.2",

@@ -3,17 +3,15 @@ import { AppBar,
   Card, CardActionArea, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, Typography } from "@mui/material";
 import React, {useContext, useEffect, useState } from "react";
 import { NavBar } from "../components/NavBar";
-import { ScrollList } from "../components/ScrollList";
 import { makeStyles } from '@mui/styles';
-import {getAllAudioBooks, getAudioBookData, getAudioBooksByContentId} from '../services/content';
+import {addToFavorites} from '../services/favorites';
+import {getAudioBooksByContentId} from '../services/content';
 import { Content } from "../types/content";
 import { useRouting } from "../routing";
 import { SearchContext } from "../contexts/search";
 import { useData } from "../hooks/useData";
 import ReactAudioPlayer from 'react-audio-player';
 import Review from "../components/Review";
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +52,7 @@ const DisplayContentEntity = (p: { content: Content, setReload: React.Dispatch<R
               />
             </div>
             <Review content_id={p.content.content_id} reviewValue={p.content.review}/>
+            <Button onClick={() => addToFavorites(p.content.content_id)}> Add to favorites </Button>
           </CardContent>
 
 

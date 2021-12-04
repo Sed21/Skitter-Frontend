@@ -7,10 +7,6 @@ import { Copyright } from "../components/Copyright";
 import { signUp } from "../services/auth";
 import { SignUpInfo, SignUpResponse } from "../types/auth";
 import { headers } from "../services/config";
-// import { UserContext } from "../../contexts/userContext";
-// import { urls, useRouting } from "../../routing/routes";
-// import { userLogin } from "../../services/auth-service";
-// import { headers } from "../../services/config";
 
 interface Props {
     onSubmit: (values: SignUpInfo) => void;
@@ -68,7 +64,6 @@ export const RegisterPage = () => {
     const classes = useStyles();
     const { routeTo } = useRouting();
     const [error, setError] = useState<string>("");
-    // const [, setUserContext] = useContext(UserContext);
 
     const initialValues = {
         username: '',

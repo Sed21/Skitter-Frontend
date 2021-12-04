@@ -7,3 +7,7 @@ export function useTitle(title: string) {
   }, [appTitle]);
   return setAppTitle;
 }
+
+export function formatDate(date: Date): string {
+  return new Date(date).toLocaleDateString('en-GB');
+}

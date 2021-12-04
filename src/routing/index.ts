@@ -12,7 +12,7 @@ export const urls = {
   userManagementPage: () => '/admin/user',
   contentManagementPage: () => '/admin/content',
   accountPage: (p: {id: string}) => `/user/${p.id}`,
-  favoritesPage: () => '/user/favorites',
+  favoritesPage: () => '/favorites',
   reviewsPage: () => '/user/reviews',
 };
 

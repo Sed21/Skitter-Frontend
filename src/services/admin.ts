@@ -15,7 +15,7 @@ export function adminDeleteUser(user_id: string): Promise<any>{
 }
 
 export function adminViewUsers(): Promise<UserResponse>{
-  const url = apiUrl + `/api/admin/view`;
+  const url = apiUrl + `/api/admin/user/view`;
   headers.Authorization = localStorage.getItem('token') || '';
   return fetchAndParse<UserResponse>(url, {method: "GET", headers});
 }
