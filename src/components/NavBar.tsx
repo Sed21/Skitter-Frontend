@@ -1,14 +1,13 @@
-import { AppBar,Button, Fade, IconButton, InputBase, Link, Menu, Toolbar, Tooltip } from '@mui/material'
-import React, { KeyboardEventHandler, useContext, useState } from 'react'
+import { AppBar, IconButton,  Link, Menu, Toolbar, Tooltip } from '@mui/material'
+import React, {  useContext, useState } from 'react'
 import { makeStyles } from '@mui/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { Typography, MenuItem } from '@mui/material';
 import { urls, useRouting } from '../routing';
 import { headers } from '../services/config';
-import SearchIcon from '@mui/icons-material/Search';
-import { SearchContext } from '../contexts/search';
 import { signOut } from '../services/auth';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 // @ts-ignore
 const useStyles = makeStyles((theme: any) => ({
@@ -23,43 +22,7 @@ const useStyles = makeStyles((theme: any) => ({
     color: 'white',
     fontSize: 40,
     marginRight: '5px'
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: theme.palette.common.white,
-    '&:hover': {
-      backgroundColor: theme.palette.common.white,
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
+  }
 }));
 
 
@@ -70,8 +33,6 @@ export const NavBar = () => {
   const classes = useStyles();
 
   const { routeTo } = useRouting();
-  const [,setSearchWord] = useContext(SearchContext);
-  const [searchText, setSearchText] = useState<string>("");
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -94,15 +55,8 @@ export const NavBar = () => {
       });
   }
 
-  const handleKeyPress = (e: any) => {
-    if(e.keyCode === 13){
-      routeTo(urls.contentPage);
-      setSearchWord(searchText);
-    }
-  }
 
-
-  return <AppBar position="fixed">
+  return <AppBar color="transparent" position="fixed">
     <Toolbar>
       <Link href="/mainpage">
         <IconButton edge="start">
@@ -113,35 +67,20 @@ export const NavBar = () => {
           </Typography>
         </IconButton>
       </Link>
-      <IconButton edge="start" onClick={() => routeTo(urls.addContent)}>
-        <MenuBookIcon className={classes.menuLogo}>
-        </MenuBookIcon>
-        <Typography variant="h6" className={classes.title}>
-          Add Creation page
-        </Typography>
-      </IconButton>
-      <Button> Click me</Button>
-      <div style={{ flexGrow: 1 }}>
-      </div>
-      <div className={classes.search}>
-        <div className={classes.searchIcon}>
-          <SearchIcon />
-        </div>
-        <InputBase
-          onKeyUp={handleKeyPress}
-          placeholder="Search…"
-          classes={{
-            root: classes.inputRoot,
-            input: classes.inputInput,
-          }}
-          onChange={ (e: { target: { value: React.SetStateAction<string>; }; }) => setSearchText(e.target.value)}
-          inputProps={{ 'aria-label': 'search' }}
-        />
-      </div>
+      <div style={{ flexGrow: 1 }}/>
+      { localStorage.getItem("role") === "Admin" || localStorage.getItem("role") === "Creator" ?
+        <Link href="/upload" style={{ textDecoration: 'none' }}>
+        <IconButton edge="start" sx={{paddingRight: "15px"}}>
+          <CloudUploadIcon sx={{marginRight: "5px", color: "white"}}/>
+          <Typography variant="h6" className={classes.title}>
+            Upload recording
+          </Typography>
+        </IconButton>
+      </Link> : null
+      }
       <Tooltip title="My Profile" style={{ color: 'white' }}>
         <IconButton onClick={handleClick} aria-controls="profile-dropwdown" edge="end">
-          <AccountCircleIcon className={classes.menuButton}>
-          </AccountCircleIcon>
+          <AccountCircleIcon className={classes.menuButton}/>
         </IconButton>
       </Tooltip>
       <Menu

@@ -12,6 +12,7 @@ import { RegisterPage } from "./pages/signUpPage";
 import { FavoritesPage } from "./pages/favoritesPage";
 import { AccountPage } from "./pages/accountPage";
 import { AdminPage } from "./pages/adminPage";
+import { SearchContextProvider } from "./contexts/search";
 
 
 export const theme = createTheme({
@@ -33,22 +34,24 @@ const App = () => {
   const classes = useStyles();
   return (
     <div className={classes.App}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Route exact={true} path={route(urls.signInPage)} component={LoginPage} />
-        <Route exact={true} path={route(urls.signUpPage)} component={RegisterPage}/>
-        <Route exact={true} path={route(urls.welcomePage)} component={WelcomePage}/>
-         <Route exact={true} path={route(urls.contentPage)} component={ContentPage}/>
-         <Route exact={true} path={route(urls.contentEntityPage, ["id"])} component={ContentEntityPage}/>
-        <Route exact={true} path={route(urls.addContent)} component={AddContent}/>
-        <Route exact={true} path={route(urls.favoritesPage)} component={FavoritesPage}/>
-        <Route exact={true} path={route(urls.accountPage, ["id"])} component={AccountPage}/>
-        <Route exact={true} path={route(urls.adminPage)} component={AdminPage}/>
-        {/* <Route exact={true} path={route(urls.startPage)} component={}/> */}
-        <Route exact={true} path={'/'}>
-          <Redirect to={startUrl()} />
-        </Route>
-      </ThemeProvider>
+      <SearchContextProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Route exact={true} path={route(urls.signInPage)} component={LoginPage} />
+          <Route exact={true} path={route(urls.signUpPage)} component={RegisterPage}/>
+          <Route exact={true} path={route(urls.welcomePage)} component={WelcomePage}/>
+          <Route exact={true} path={route(urls.contentPage)} component={ContentPage}/>
+          <Route exact={true} path={route(urls.contentEntityPage, ["id"])} component={ContentEntityPage}/>
+          <Route exact={true} path={route(urls.addContent)} component={AddContent}/>
+          <Route exact={true} path={route(urls.favoritesPage)} component={FavoritesPage}/>
+          <Route exact={true} path={route(urls.accountPage, ["id"])} component={AccountPage}/>
+          <Route exact={true} path={route(urls.adminPage)} component={AdminPage}/>
+          {/* <Route exact={true} path={route(urls.startPage)} component={}/> */}
+          <Route exact={true} path={'/'}>
+            <Redirect to={startUrl()} />
+          </Route>
+        </ThemeProvider>
+      </SearchContextProvider>
     </div>
   );
 }

@@ -4,11 +4,7 @@ import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: '100vh',
-    backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/content-background.jpg'})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
+    maxHeight: "100vh"
   },
 }))
 

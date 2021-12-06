@@ -38,7 +38,10 @@ const useStyles = makeStyles((theme: any) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'gray',
+        backgroundImage: `url(${process.env.PUBLIC_URL + "/assets/welcome-page.png"})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         height: "100vh"
     },
     formContainer: {

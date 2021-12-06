@@ -1,17 +1,18 @@
-import { AppBar,
-  Button,
-  Card, CardActionArea, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, Typography } from "@mui/material";
-import React, {useContext, useEffect, useState } from "react";
+import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
 import { NavBar } from "../components/NavBar";
 import { makeStyles } from '@mui/styles';
-import {addToFavorites} from '../services/favorites';
-import {getAudioBooksByContentId} from '../services/content';
-import { Content } from "../types/content";
-import { useRouting } from "../routing";
-import { SearchContext } from "../contexts/search";
+import { addToFavorites, removeFromFavorites, viewFavorites } from '../services/favorites';
+import { getAudioBooksByContentId } from '../services/content';
 import { useData } from "../hooks/useData";
 import ReactAudioPlayer from 'react-audio-player';
 import Review from "../components/Review";
+import { apiUrl } from "../services/config";
+import { formatDate } from "../utils";
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useState } from "react";
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,71 +21,109 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
+    display: "flex",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cardRoot: {
-    width: '80vh'
+    display: "flex",
+    flexDirection: 'row',
+    width: "70vw",
+    height: "65vh",
+    gap: "20px",
+    alignItems: 'center'
+  },
+  player: {
+    width: "80%",
   }
 }))
 
-const DisplayContentEntity = (p: { content: Content, setReload: React.Dispatch<React.SetStateAction<boolean>>, reload: boolean }) => {
-
-  const { routeTo } = useRouting();
-  // @ts-ignore
+const ContentBlock = () => {
+  const contentId = window.location.href.split('/').pop() || ''
+  const { data, isLoading } = useData(getAudioBooksByContentId, [], contentId);
   const classes = useStyles();
-  const audioFile = window.location.href.split('/').pop() || ''
+  const [isFavorite, setIsFavorite] = useState<Boolean>(false)
 
-  return (
-      <Card className={classes.cardRoot}>
-          <CardContent>
-            <Typography variant="h4" >{p.content.book_title}</Typography>
-            <Typography style={{ textAlign: "start" }}>{p.content.book_title}</Typography>
-            <Typography style={{ textAlign: "start" }}>{p.content.book_author}</Typography>
-            <Typography style={{ textAlign: "start" }}>{p.content.creator_name}</Typography>
-            <Typography style={{ textAlign: "start" }}>{p.content.description}</Typography>
-            <Typography style={{ textAlign: "start" }}>{p.content.review}</Typography>
-            <Typography style={{ textAlign: "start" }}>{p.content.upload_date}</Typography>
-            <div>
-              <ReactAudioPlayer
-                src={`http://127.0.0.1:8080/api/content/audio/${encodeURI(audioFile)}`}
-                autoPlay={false}
-                controls={true}
-                // controlsList={"Download"}
-              />
-            </div>
-            <Review content_id={p.content.content_id} reviewValue={p.content.review}/>
-            <Button onClick={() => addToFavorites(p.content.content_id)}> Add to favorites </Button>
-          </CardContent>
-
-
-      </Card >
-  );
-}
-
-export const ContentBlock = () => {
-
-  const [reload, setReload] = useState(false);
-  const [searchWord, setSearchWord] = useContext(SearchContext);
-  setSearchWord(window.location.href.split('/')[0] || '');
-  const { data, isLoading } = useData(getAudioBooksByContentId, [reload],window.location.href.split('/').pop() || '');
-  // @ts-ignore
-  const classes = useStyles();
-
-  useEffect(() =>{
-    setReload(!reload);
-  },[searchWord])
+  const isInFavorites = async (id: string) => {
+    const favorites = await viewFavorites()
+    const entity = favorites.favorites.filter((e: any) => e.content_id === id)
+    return entity.length !== 0
+  }
 
   if (isLoading) {
     return <div></div>;
   }
-  return <div>
-    <DisplayContentEntity content={data?.content[0] as unknown as Content} setReload={setReload} reload={reload} />
-  </div>
+
+  const p = data?.content[0]
+  if (!p) return <div />
+
+  isInFavorites(p.content_id)
+    .then(res => setIsFavorite(res))
+    .catch(e => { })
+
+  return (
+    <Card className={classes.cardRoot}>
+      <CardMedia sx={{ width: "40%", height: "100%" }}
+        component="img"
+        image="https://picsum.photos/200/200" />
+      <Box sx={{ width: "100%" }}>
+        <CardContent>
+          <Typography variant="h4" sx={{ paddingBottom: "10px" }}>{p.book_title}</Typography>
+          <Typography>By {p.book_author}</Typography>
+          <br />
+          <Typography>Narrator: {p.creator_name}</Typography>
+          <Typography><b>Description:</b> {p.description}</Typography>
+          <br />
+          <Review content_id={p.content_id} reviewValue={p.review} />
+          <br />
+          <Typography>Uploaded on {formatDate(p.upload_date)}.</Typography>
+        </CardContent>
+        <CardMedia>
+          <ReactAudioPlayer className={classes.player}
+            src={`${apiUrl}/api/content/audio/${encodeURI(contentId)}`}
+            autoPlay={false}
+            controls={true} />
+        </CardMedia>
+        <CardActionArea sx={{ maxWidth: "36%" }}>
+          {
+            isFavorite ?
+              <IconButton sx={{ color: "red" }} onClick={() => {
+                setIsFavorite(false);
+                removeFromFavorites(p.content_id)
+              }}>
+                <Typography sx={{ marginRight: "10px" }}>
+                  {
+                    "Remove from favorites"
+                  }
+                </Typography>
+                <FavoriteIcon />
+              </IconButton> : 
+
+            <IconButton sx={{ color: "gray" }} onClick={() => {
+              setIsFavorite(true);
+              addToFavorites(p.content_id)
+            }}>
+              <Typography sx={{ marginRight: "10px" }}>
+                {
+                  "Add to favorites"
+                }
+              </Typography>
+              <FavoriteIcon />
+            </IconButton>
+
+          }
+
+        </CardActionArea>
+      </Box>
+
+    </Card>
+  );
 }
 
 export const ContentEntityPage = () => {
   const classes = useStyles();
   return (<div className={classes.root}>
     <NavBar />
-    <ContentBlock/>
+    <ContentBlock />
   </div>)
 }

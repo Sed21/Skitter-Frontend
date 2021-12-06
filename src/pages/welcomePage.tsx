@@ -11,17 +11,17 @@ const useStyles = makeStyles(() => ({
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        display: "flex",
+        position: 'relative',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     container: {
         display: 'flex',
-        alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-    },
-    buttonContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'nowrap'
+        width: "300px",
+        margin: 'auto'
     },
     button: {
         margin: 10,
@@ -29,8 +29,12 @@ const useStyles = makeStyles(() => ({
     },
     textBox: {
         color: '#e2dfdf',
-        width: "30vw",
-        fontSize: "40px"
+        fontSize: "40px",
+        textAlign: 'center'
+    },
+    whiteContainer:{
+        backgroundColor: 'transparent',
+        width: "600px"
     }
 }))
 
@@ -41,15 +45,13 @@ export const WelcomePage = () => {
 
     return (
         <div className={classes.root}>
-            <div>
+            <div className={classes.whiteContainer}>
                 <Typography className={classes.textBox}>
                     Skitter is an online library for audio books. Feel free to join our community.
                 </Typography>
                 <div className={classes.container}>
-                    <div className={classes.buttonContainer}>
                         <Button onClick={() => routeTo(urls.signUpPage)} className={classes.button}>Sign Up</Button>
                         <Button onClick={() => routeTo(urls.signInPage)} className={classes.button}>Sign In</Button>
-                    </div>
                 </div>
             </div>
         </div>

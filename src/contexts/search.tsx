@@ -1,4 +1,4 @@
-import { createContext, Dispatch, FC, useEffect, useState } from 'react'
+import { createContext, Dispatch, FC, useState } from 'react'
 
 export const SearchContext = createContext<[string,Dispatch<string>]>([null!, () => null!]);
 

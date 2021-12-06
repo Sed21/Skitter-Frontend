@@ -1,5 +1,3 @@
-import { AppBar, CssBaseline, Toolbar } from "@mui/material";
-import React from "react";
 import { NavBar } from "../components/NavBar";
 import { ScrollList } from "../components/ScrollList";
 import { makeStyles } from '@mui/styles';
@@ -13,6 +11,12 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
   },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingTop: "10vh"
+  }
 }))
 
 export const ContentPage = () => {
@@ -21,6 +25,6 @@ export const ContentPage = () => {
 
   return (<div className={classes.root}>
     <NavBar />
-    <ScrollList />
+    <ScrollList/>
   </div>)
 }
